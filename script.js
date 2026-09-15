@@ -180,7 +180,7 @@ document.getElementById("helpInput").addEventListener("keydown", function(event)
 
 (function () {
 
-    const API_BASE_URL = "http://localhost:8080";
+    const API_BASE_URL = "https://sih26132-backend.onrender.com";
 
     // -----------------------------------------------------
     // PUT YOUR REAL CROP UUIDs HERE
@@ -1040,7 +1040,7 @@ console.log("======================================");
 
 (function () {
 
-    const AUTH_API = "http://localhost:8080";
+    const AUTH_API = "https://sih26132-backend.onrender.com";
 
     async function realBackendLogin() {
 
@@ -1272,7 +1272,7 @@ async function realBackendLogin() {
     try {
 
         const response = await fetch(
-            "http://localhost:8080/api/auth/login",
+            "https://sih26132-backend.onrender.com",
             {
                 method: "POST",
                 headers: {
