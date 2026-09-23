@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri Market Decision</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="topbar">
+        <div class="logo-box">
+            <div class="logo">🌿</div>
+            <div>
+                <h1>Agri Market Decision</h1>
+                <p>Smart market decision support for farmers</p>
+            </div>
+        </div>
+<nav>
+    <a class="active" href="#home">⌂ Home</a>
+    <a href="#lot">⊕ Create Lot</a>
+    <a href="#market">▥ Market</a>
+    <a href="#forecast">⌁ Price Forecast</a>
+    <a href="#recommendation">♧ Recommendation</a>
+    <a href="#buyers">♟ Buyers</a>
+    <a href="#offer">◆ Offer</a>
+</nav>
+
+<button class="login-btn" onclick="openLogin()">🔐 Login</button>
+<div class="profile" title="Profile">👤</div>
+
+        
+    </header>
+
+    <main>
+
+        <!-- HERO -->
+        <section id="home" class="hero">
+            <div class="hero-photo">
+                <img src="images/hero-farmer.jpg" alt="Farmer working in a crop field">
+            </div>
+
+           <div class="hero-content">
+          <h2>🌿 Welcome, Farmer 👨‍🌾</h2>
+
+          <p>
+        Get simple market information to decide
+        where and when to sell your crop.
+       </p>
+
+    <a class="primary-btn" href="#lot">Add Your Crop →</a>
+</div>
+
+            <div class="weather-card">
+                <div class="weather-icon">☀️</div>
+                <p>Lucknow</p>
+                <strong>28°C</strong>
+                <span>Partly Cloudy</span>
+                <small>10 Sep 2026</small>
+            </div>
+
+            <div class="insight-card">
+    <span>🌱</span>
+    <h3>Better Decisions<br>Better Returns</h3>
+    <p>Use market trends to decide when and where to sell.</p>
+</div>
+        </section>
+
+        <!-- QUICK FEATURES -->
+        <section class="feature-grid">
+
+            <article class="feature-card">
+                <div class="feature-icon green">🌱</div>
+                <img src="images/crop-lot.jpg" alt="Crop plant">
+                <div class="feature-text">
+                    <h3>Create Crop Lot</h3>
+                    <p>Add details about your crop, quantity and location.</p>
+                    <a href="#lot">Create Lot →</a>
+                </div>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon blue">📊</div>
+                <img src="images/market.jpg" alt="Agricultural market">
+                <div class="feature-text">
+                    <h3>Market Comparison</h3>
+                    <p>Compare prices across different markets.</p>
+                    <a href="#market">View Market →</a>
+                </div>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon purple">📈</div>
+                <img src="images/forecast.jpg" alt="Price forecast">
+                <div class="feature-text">
+                    <h3>Price Forecast</h3>
+                    <p>Get future price predictions using data and AI.</p>
+                    <a href="#forecast">View Forecast →</a>
+                </div>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon orange">💡</div>
+                <img src="images/crop-lot.jpg" alt="Crop recommendation">
+                <div class="feature-text">
+                    <h3>Recommendation</h3>
+                    <p>Get smart suggestions for better profits.</p>
+                    <a href="#recommendation">View Recommendation →</a>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- MARKET INSIGHTS -->
+        <section id="market" class="market-section">
+            <div class="section-heading">
+                <div>
+                    <h2>📊 Market Insights</h2>
+                    <p>Live market data and trends for better decision making.</p>
+                </div>
+                <a href="#market">View All →</a>
+            </div>
+
+            <div class="market-layout">
+
+                <div class="crop-panel">
+                    <label>Crop</label>
+                    <select>
+                        <option>🌾 Wheat</option>
+                        <option>🌾 Rice</option>
+                        <option>🥔 Potato</option>
+                        <option>🧅 Onion</option>
+                    </select>
+
+                    <img src="images/market.jpg" alt="Wheat market">
+                </div>
+
+                <div class="price-box">
+                    <span>Current Market Price</span>
+                    <strong>₹ 2,480 <small>/ Quintal</small></strong>
+                    <b>↑ 4.8%</b>
+                    <p>vs last week</p>
+                </div>
+
+                <div class="chart-box">
+                    <h3>Price Trend (Last 7 Days)</h3>
+                    <div class="chart">
+                        <div class="bar" style="height:35%"></div>
+                        <div class="bar" style="height:48%"></div>
+                        <div class="bar" style="height:55%"></div>
+                        <div class="bar" style="height:62%"></div>
+                        <div class="bar" style="height:70%"></div>
+                        <div class="bar" style="height:82%"></div>
+                        <div class="bar" style="height:92%"></div>
+                    </div>
+                    <div class="chart-labels">
+                        <span>3 Sep</span><span>5 Sep</span><span>7 Sep</span><span>9 Sep</span><span>10 Sep</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FORECAST -->
+        <section id="forecast" class="forecast-section">
+            <div class="section-heading">
+                <div>
+                    <h2>📅 7 Days Forecast</h2>
+                    <p>Expected price for your crop</p>
+                </div>
+                <span class="crop-name">🌾 Wheat</span>
+            </div>
+
+            <div class="forecast-main">
+                <img src="images/forecast.jpg" alt="Forecast over crop field">
+                <div class="forecast-price">
+                    <span>Expected Price</span>
+                    <strong>₹ 2,620 <small>/ Quintal</small></strong>
+                    <b>↑ 5.6%</b>
+                </div>
+            </div>
+
+            <div class="days">
+                <div><span>Mon</span><b>₹ 2,520</b></div>
+                <div><span>Tue</span><b>₹ 2,540</b></div>
+                <div><span>Wed</span><b>₹ 2,580</b></div>
+                <div><span>Thu</span><b>₹ 2,610</b></div>
+                <div><span>Fri</span><b>₹ 2,620</b></div>
+                <div><span>Sat</span><b>₹ 2,640</b></div>
+                <div><span>Sun</span><b>₹ 2,660</b></div>
+            </div>
+        </section>
+
+        <!-- CROP LOT -->
+        <section id="lot" class="form-section">
+            <section id="mlResults" class="form-section" style="display:none;">
+    <div class="section-header">
+        <span class="eyebrow">AI POWERED</span>
+        <h2>🤖 AI Crop Lot Predictions</h2>
+        <p id="predictionMessage">
+            AI will analyze your crop lot after creation.
+        </p>
+    </div>
+
+    <div class="form-grid">
+
+        <div class="info-card">
+            <span>💰 Expected Market Price</span>
+            <strong id="priceResult">--</strong>
+            <small>AI predicted price per quintal</small>
+        </div>
+
+        <div class="info-card">
+            <span>📅 Best Sale Window</span>
+            <strong id="saleWindowResult">--</strong>
+            <small>AI recommended selling period</small>
+        </div>
+
+        <div class="info-card">
+            <span>🤝 Buyer Match</span>
+            <strong id="buyerMatchResult">--</strong>
+            <small>AI buyer matching score</small>
+        </div>
+
+    </div>
+</section>
+            <div class="section-heading">
+                <div>
+                    <h2>🌱 Create Crop Lot</h2>
+                    <p>Add your crop details to get personalized market insights.</p>
+                </div>
+            </div>
+
+            <form>
+                <div class="form-grid">
+                    <div>
+                        <label for="crop">Select Crop</label>
+                        <select id="crop">
+                            <option>Select Crop</option>
+                            <option>Wheat</option>
+                            <option>Rice</option>
+                            <option>Potato</option>
+                            <option>Onion</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="quantity">Quantity (Quintal)</label>
+                        <input id="quantity" type="number" placeholder="Enter quantity">
+                    </div>
+
+                    <div>
+                        <label for="location">Location</label>
+                        <input id="location" type="text" placeholder="Enter your location">
+                    </div>
+
+                    <div>
+                        <label for="quality">Crop Quality</label>
+                        <select id="quality">
+                            <option>Select Quality</option>
+                            <option>Good</option>
+                            <option>Average</option>
+                            <option>Premium</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="primary-btn">Create Lot →</button>
+            </form>
+        </section>
+
+        <!-- RECOMMENDATION -->
+        <section id="recommendation" class="recommendation">
+            <div class="recommendation-image">
+                <img src="images/crop-lot.jpg" alt="Healthy crop">
+            </div>
+            <div>
+                <span class="tag">AI RECOMMENDATION</span>
+                <h2>💡 Wait for a Better Price</h2>
+                <p>
+                    Market data suggests that the price may increase
+                    over the next few days.
+                </p>
+                <div class="recommendation-stats">
+                    <div><span>Expected Price</span><strong>₹2,660/Q</strong></div>
+                    <div><span>Risk Level</span><strong>Medium</strong></div>
+                </div>
+                <a class="primary-btn" href="#buyers">See Best Buyer →</a>
+            </div>
+        </section>
+
+        <!-- BUYERS + NET REALIZATION -->
+        <section id="buyers" class="two-column">
+
+            <div class="buyers-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>🏆 Top Buyers</h2>
+                        <p>Compare buyers before selling.</p>
+                    </div>
+                </div>
+
+                <div class="buyer-row">
+                    <img src="images/buyers.jpg" alt="Buyer">
+                    <div><strong>Buyer A</strong><span>₹2,600 / Quintal</span></div>
+                    <b>4.8 ⭐</b>
+                </div>
+
+                <div class="buyer-row">
+                    <img src="images/buyers.jpg" alt="Buyer">
+                    <div><strong>Buyer B</strong><span>₹2,550 / Quintal</span></div>
+                    <b>4.6 ⭐</b>
+                </div>
+
+                <div class="buyer-row">
+                    <img src="images/buyers.jpg" alt="Buyer">
+                    <div><strong>Buyer C</strong><span>₹2,500 / Quintal</span></div>
+                    <b>4.5 ⭐</b>
+                </div>
+            </div>
+
+            <div id="realization" class="realization-card">
+                <h2>💰 Net Realization</h2>
+                <p>Selling Price <strong>₹2,600/Q</strong></p>
+                <p>Transport Cost <strong>- ₹150/Q</strong></p>
+                <p>Other Cost <strong>- ₹50/Q</strong></p>
+                <hr>
+                <span>Final Net Realization</span>
+                <strong class="big-price">₹2,400 <small>/ Quintal</small></strong>
+            </div>
+
+        </section>
+
+        <!-- OFFER + LOGISTICS -->
+        <section id="offer" class="two-column">
+
+            <div class="offer-card">
+                <img src="images/offer.jpg" alt="Make an offer">
+                <div>
+                    <h2>🤝 Make an Offer</h2>
+                    <p>Send your expected price to the selected buyer.</p>
+                    <input type="number" placeholder="Expected price / Quintal">
+                    <button class="primary-btn">Send Offer →</button>
+                </div>
+            </div>
+
+            <div id="logistics" class="logistics-card">
+                <h2>🚚 Transaction & Logistics</h2>
+                <div class="timeline">
+                    <div class="done">✓ <span>Offer Sent</span></div>
+                    <div>○ <span>Buyer Confirmation</span></div>
+                    <div>○ <span>Transportation</span></div>
+                    <div>○ <span>Crop Pickup</span></div>
+                    <div>○ <span>Payment</span></div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+    ```html
+<!-- =====================================================
+     ADD-ONLY: CROP DISEASE DETECTION
+     Do NOT remove or modify existing code
+===================================================== -->
+
+<section class="disease-section" id="diseaseDetection">
+
+    <div class="section-title">
+
+        <h2>🌿 Crop Disease Detection</h2>
+
+        <p>
+            Take a photo or upload a crop image
+            to detect possible diseases using AI.
+        </p>
+
+    </div>
+
+
+    <div class="disease-detection">
+
+        <!-- Hidden image input -->
+
+        <input
+            type="file"
+            id="cropDiseaseImage"
+            accept="image/*"
+            capture="environment"
+            style="display:none;"
+        >
+
+
+        <!-- Camera / Upload Button -->
+
+        <button
+            type="button"
+            class="primary-btn"
+            id="diseaseImageButton"
+            onclick="openDiseaseImagePicker()">
+
+            📷 Take / Upload Crop Photo
+
+        </button>
+
+
+        <!-- Image Preview -->
+
+        <div
+            id="diseaseImagePreview"
+            style="display:none;">
+
+            <h3>
+                Selected Crop Image
+            </h3>
+
+            <img
+                id="cropPreviewImage"
+                src=""
+                alt="Selected crop image"
+            >
+
+
+            <br>
+
+
+            <button
+                type="button"
+                class="secondary-btn"
+                onclick="retakeCropPhoto()">
+
+                🔄 Retake / Choose Another
+
+            </button>
+
+        </div>
+
+
+        <!-- Detect Button -->
+
+        <button
+            type="button"
+            class="primary-btn"
+            id="detectDiseaseButton"
+            onclick="detectCropDisease()"
+            style="display:none;">
+
+            🤖 Detect Disease
+
+        </button>
+
+
+        <!-- Loading -->
+
+        <div
+            id="diseaseLoading"
+            style="display:none;">
+
+            <p>
+                🔄 Uploading image and analyzing crop...
+            </p>
+
+        </div>
+
+
+        <!-- Result -->
+
+        <div
+            id="diseaseResult"
+            class="ml-result-card"
+            style="display:none;">
+
+            <span>
+                🌱 AI Disease Detection
+            </span>
+
+            <strong id="diseaseName">
+                --
+            </strong>
+
+            <small id="diseaseConfidence">
+                Confidence: --
+            </small>
+
+            <p id="diseaseAdvice">
+                --
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+```
+
+
+    <!-- SMART HELP -->
+    <section class="help-section">
+        <div class="help-content">
+            <span class="help-tag">💡 SMART HELP</span>
+            <h2>How can we help you?</h2>
+            <p>Ask a question about using the Agri Market Dashboard.</p>
+            <div class="help-box">
+                <input type="text" id="helpInput" placeholder="Example: How can I create a crop lot?">
+                <button type="button" onclick="getHelp()">Ask →</button>
+            </div>
+            <div id="helpAnswer" class="help-answer">Type your question above to get started.</div>
+        </div>
+    </section>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="login-modal" aria-hidden="true">
+        <div class="login-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+            <button class="close-login" type="button" onclick="closeLogin()" aria-label="Close">×</button>
+            <div class="login-icon">🌾</div>
+            <h2 id="loginTitle">Welcome Back</h2>
+            <p>Login to your Agri Market account</p>
+            <input type="text" id="loginUser" placeholder="Enter username" autocomplete="username">
+            <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="current-password">
+            <button class="primary-btn login-submit" type="button" onclick="loginUser()">Login →</button>
+            <p id="loginMessage" class="login-message"></p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div>
+            <h3>🌿 Agri Market Decision</h3>
+            <p>Smart market decision support for farmers</p>
+        </div>
+        <p>SIH 26132 • Farmer-first decision intelligence</p>
+    </footer>
+<script src="script.js"></script>
+</body>
+</html>
