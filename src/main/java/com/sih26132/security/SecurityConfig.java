@@ -4,40 +4,32 @@ import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
-@EnableMethodSecurity
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
-    public SecurityConfig(
-            JwtAuthenticationFilter jwtAuthenticationFilter) {
-
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
-
 
     // =========================================================
     // PASSWORD ENCODER
@@ -45,10 +37,8 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
-
 
     // =========================================================
     // AUTHENTICATION MANAGER
@@ -56,12 +46,10 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration)
-            throws Exception {
+            AuthenticationConfiguration configuration) throws Exception {
 
         return configuration.getAuthenticationManager();
     }
-
 
     // =========================================================
     // CORS CONFIGURATION
@@ -70,96 +58,53 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration =
-                new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
 
+        /*
+         * IMPORTANT:
+         * Do NOT use "*"
+         * when allowCredentials(true) is enabled.
+         */
 
-        // -----------------------------------------------------
-        // ALLOWED FRONTEND ORIGINS
-        // -----------------------------------------------------
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:5500",
+                "http://127.0.0.1:5500",
+                "https://ashishpundir9170-star.github.io"
+        ));
 
-        configuration.setAllowedOrigins(
-                Arrays.asList(
+        configuration.setAllowedMethods(Arrays.asList(
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "OPTIONS",
+                "HEAD"
+        ));
 
-                        // Local frontend
-                        "http://localhost:5500",
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "Accept",
+                "Origin",
+                "X-Requested-With"
+        ));
 
-                        // Local frontend - 127.0.0.1
-                        "http://127.0.0.1:5500",
-
-                        // GitHub Pages frontend
-                        "https://ashishpundir9170-star.github.io"
-                )
-        );
-
-
-        // -----------------------------------------------------
-        // ALLOWED HTTP METHODS
-        // -----------------------------------------------------
-
-        configuration.setAllowedMethods(
-                Arrays.asList(
-
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "DELETE",
-                        "PATCH",
-                        "OPTIONS"
-                )
-        );
-
-
-        // -----------------------------------------------------
-        // ALLOWED HEADERS
-        // -----------------------------------------------------
-
-        configuration.setAllowedHeaders(
-                Arrays.asList(
-
-                        "Authorization",
-                        "Content-Type",
-                        "Accept",
-                        "Origin",
-                        "X-Requested-With"
-                )
-        );
-
-
-        // -----------------------------------------------------
-        // EXPOSED HEADERS
-        // -----------------------------------------------------
-
-        configuration.setExposedHeaders(
-                Arrays.asList(
-                        "Authorization"
-                )
-        );
-
-
-        // -----------------------------------------------------
-        // CREDENTIALS
-        // -----------------------------------------------------
+        configuration.setExposedHeaders(Arrays.asList(
+                "Authorization"
+        ));
 
         configuration.setAllowCredentials(true);
 
-
-        // -----------------------------------------------------
-        // REGISTER CORS CONFIGURATION
-        // -----------------------------------------------------
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration(
-                "/**",
-                configuration
-        );
-
+        source.registerCorsConfiguration("/**", configuration);
 
         return source;
     }
-
 
     // =========================================================
     // SECURITY FILTER CHAIN
@@ -167,123 +112,99 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http)
-            throws Exception {
-
+            HttpSecurity http) throws Exception {
 
         http
 
-                // -------------------------------------------------
-                // CSRF
-                // -------------------------------------------------
+            // -------------------------------------------------
+            // CORS
+            // -------------------------------------------------
 
-                .csrf(csrf -> csrf.disable())
+            .cors(Customizer.withDefaults())
 
+            // -------------------------------------------------
+            // CSRF
+            // -------------------------------------------------
 
-                // -------------------------------------------------
-                // CORS
-                // -------------------------------------------------
+            .csrf(csrf -> csrf.disable())
 
-                .cors(Customizer.withDefaults())
+            // -------------------------------------------------
+            // STATELESS JWT SESSION
+            // -------------------------------------------------
 
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                )
+            )
 
-                // -------------------------------------------------
-                // SESSION
-                // -------------------------------------------------
+            // -------------------------------------------------
+            // AUTHORIZATION
+            // -------------------------------------------------
 
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
+            .authorizeHttpRequests(auth -> auth
+
+                // CORS preflight
+                .requestMatchers(HttpMethod.OPTIONS, "/**")
+                .permitAll()
+
+                // Authentication APIs
+                .requestMatchers(
+                    "/api/auth/**"
+                )
+                .permitAll()
+
+                // Health check
+                .requestMatchers(
+                    "/actuator/health"
+                )
+                .permitAll()
+
+                // Swagger
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**"
+                )
+                .permitAll()
+
+                // ML APIs
+                .requestMatchers(
+                    "/api/ml/**"
+                )
+                .permitAll()
+
+                // Everything else requires JWT
+                .anyRequest()
+                .authenticated()
+            )
+
+            // -------------------------------------------------
+            // EXCEPTION HANDLING
+            // -------------------------------------------------
+
+            .exceptionHandling(exception -> exception
+
+                .authenticationEntryPoint(
+                    authenticationEntryPoint()
                 )
 
-
-                // -------------------------------------------------
-                // AUTHORIZATION
-                // -------------------------------------------------
-
-                .authorizeHttpRequests(auth -> auth
-
-
-                        // =========================================
-                        // AUTH APIs
-                        // =========================================
-
-                        .requestMatchers(
-                                "/api/auth/**"
-                        ).permitAll()
-
-
-                        // =========================================
-                        // HEALTH CHECK
-                        // =========================================
-
-                        .requestMatchers(
-                                "/actuator/health"
-                        ).permitAll()
-
-
-                        // =========================================
-                        // SWAGGER
-                        // =========================================
-
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**"
-                        ).permitAll()
-
-
-                        // =========================================
-                        // ML APIs
-                        // =========================================
-
-                        .requestMatchers(
-                                "/api/ml/**"
-                        ).permitAll()
-
-
-                        // =========================================
-                        // EVERYTHING ELSE
-                        // =========================================
-
-                        .anyRequest().authenticated()
+                .accessDeniedHandler(
+                    accessDeniedHandler()
                 )
+            )
 
+            // -------------------------------------------------
+            // JWT FILTER
+            // -------------------------------------------------
 
-                // -------------------------------------------------
-                // EXCEPTION HANDLING
-                // -------------------------------------------------
-
-                .exceptionHandling(exception -> exception
-
-
-                        // 401
-                        .authenticationEntryPoint(
-                                authenticationEntryPoint()
-                        )
-
-
-                        // 403
-                        .accessDeniedHandler(
-                                accessDeniedHandler()
-                        )
-                )
-
-
-                // -------------------------------------------------
-                // JWT FILTER
-                // -------------------------------------------------
-
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class
-                );
-
+            .addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+            );
 
         return http.build();
     }
-
 
     // =========================================================
     // 401 UNAUTHORIZED
@@ -294,20 +215,15 @@ public class SecurityConfig {
 
         return (request, response, authException) -> {
 
-            response.setStatus(
-                    HttpServletResponseStatus.UNAUTHORIZED
-            );
-
-            response.setContentType(
-                    "application/json"
-            );
+            response.setStatus(401);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
 
             response.getWriter().write(
-                    "{\"error\":\"Unauthorized\",\"message\":\"Authentication required\"}"
+                "{\"error\":\"Unauthorized\",\"message\":\"Authentication required\"}"
             );
         };
     }
-
 
     // =========================================================
     // 403 FORBIDDEN
@@ -318,29 +234,13 @@ public class SecurityConfig {
 
         return (request, response, accessDeniedException) -> {
 
-            response.setStatus(
-                    HttpServletResponseStatus.FORBIDDEN
-            );
-
-            response.setContentType(
-                    "application/json"
-            );
+            response.setStatus(403);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
 
             response.getWriter().write(
-                    "{\"error\":\"Forbidden\",\"message\":\"Access denied\"}"
+                "{\"error\":\"Forbidden\",\"message\":\"Access denied\"}"
             );
         };
-    }
-
-
-    // =========================================================
-    // HTTP STATUS CONSTANTS
-    // =========================================================
-
-    private static class HttpServletResponseStatus {
-
-        private static final int UNAUTHORIZED = 401;
-
-        private static final int FORBIDDEN = 403;
     }
 }
