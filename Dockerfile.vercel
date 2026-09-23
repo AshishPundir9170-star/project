@@ -7,11 +7,9 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
-# Copy Maven project files
 COPY pom.xml .
 COPY src ./src
 
-# Build Spring Boot application
 RUN mvn clean package -DskipTests
 
 
@@ -24,15 +22,8 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-# Copy the Spring Boot executable JAR
 COPY --from=build /app/target/sih26132-backend-0.0.1-SNAPSHOT.jar app.jar
 
-# Vercel provides PORT.
-# 80 is used as fallback.
 ENV PORT=80
 
-# Vercel HTTP container
-EXPOSE 80
-
-# Start Spring Boot using Vercel's PORT
-CMD ["sh", "-c", "java -Dserver.port=${PORT:-80} -jar app.jar"]
+CMD ["sh", "-c", "java -Dserver.port=${PORT} -jar app.jar"]
