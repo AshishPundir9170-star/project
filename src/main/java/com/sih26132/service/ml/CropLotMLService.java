@@ -20,7 +20,6 @@ public class CropLotMLService {
             CropLotRepository cropLotRepository,
             MLPredictionService mlPredictionService
     ) {
-
         this.cropLotRepository = cropLotRepository;
         this.mlPredictionService = mlPredictionService;
     }
@@ -34,8 +33,7 @@ public class CropLotMLService {
                 cropLotRepository.findById(cropLotId)
                         .orElseThrow(() ->
                                 new RuntimeException(
-                                        "Crop lot not found: "
-                                                + cropLotId
+                                        "Crop lot not found: " + cropLotId
                                 )
                         );
 
@@ -55,7 +53,9 @@ public class CropLotMLService {
 
                 .cropLotId(cropLotId.toString())
 
-                .pricePrediction(pricePrediction)
+                .pricePrediction(
+                        pricePrediction
+                )
 
                 .saleWindowPrediction(
                         saleWindowPrediction
@@ -70,26 +70,75 @@ public class CropLotMLService {
                 .build();
     }
 
+
     private MLPredictionRequest buildMLRequest(
             CropLot lot
     ) {
+
+        /*
+         * ==============================
+         * CROP NAME
+         * ==============================
+         */
 
         String cropName =
                 lot.getCrop() != null
                         ? lot.getCrop().getName()
                         : "";
 
+
+        /*
+         * ==============================
+         * QUANTITY
+         *
+         * 1 tonne = 10 quintal
+         * ==============================
+         */
+
         double quantityTonnes =
                 lot.getQuantityQuintal() != null
                         ? lot.getQuantityQuintal() / 10.0
                         : 0.0;
+
+
+        /*
+         * ==============================
+         * PRODUCTION
+         * ==============================
+         */
 
         double productionTonnes =
                 lot.getProductionTonnes() != null
                         ? lot.getProductionTonnes()
                         : quantityTonnes;
 
+
+        /*
+         * ==============================
+         * ARRIVAL VOLUME
+         *
+         * CropLot uses BigDecimal.
+         * ML request uses Double.
+         * ==============================
+         */
+
+        double arrivalVolumeTonnes =
+                lot.getArrivalVolumeTonnes() != null
+                        ? lot.getArrivalVolumeTonnes().doubleValue()
+                        : 0.0;
+
+
+        /*
+         * ==============================
+         * BUILD ML REQUEST
+         * ==============================
+         */
+
         return MLPredictionRequest.builder()
+
+                /*
+                 * BASIC INFORMATION
+                 */
 
                 .state(
                         defaultString(
@@ -105,7 +154,9 @@ public class CropLotMLService {
                         )
                 )
 
-                .crop(cropName)
+                .crop(
+                        cropName
+                )
 
                 .season(
                         defaultString(
@@ -128,6 +179,11 @@ public class CropLotMLService {
                         )
                 )
 
+
+                /*
+                 * FARMER / BUYER INFORMATION
+                 */
+
                 .fpoMember(
                         defaultString(
                                 lot.getFpoMember(),
@@ -148,6 +204,11 @@ public class CropLotMLService {
                                 "Yes"
                         )
                 )
+
+
+                /*
+                 * WEATHER FEATURES
+                 */
 
                 .temperatureC(
                         defaultDouble(
@@ -170,6 +231,11 @@ public class CropLotMLService {
                         )
                 )
 
+
+                /*
+                 * PRODUCTION / QUANTITY
+                 */
+
                 .productionTonnes(
                         productionTonnes
                 )
@@ -177,6 +243,11 @@ public class CropLotMLService {
                 .lotQuantityTonnes(
                         quantityTonnes
                 )
+
+
+                /*
+                 * MARKET PRICE
+                 */
 
                 .currentMarketPriceRsPerQuintal(
                         defaultDouble(
@@ -199,6 +270,11 @@ public class CropLotMLService {
                         )
                 )
 
+
+                /*
+                 * MARKET INDICES
+                 */
+
                 .demandIndex(
                         defaultDouble(
                                 lot.getDemandIndex(),
@@ -214,18 +290,39 @@ public class CropLotMLService {
                 )
 
                 .priceTrend(
-        lot.getPriceTrend()
-)
+                        defaultDouble(
+                                lot.getPriceTrend(),
+                                0.0
+                        )
+                )
 
-.arrivalVolumeTonnes(
-        cropLot.getArrivalVolumeTonnes() != null
-                ? cropLot.getArrivalVolumeTonnes().doubleValue()
-                : 0.0
-)
 
-.buyerDemandTonnes(
-        lot.getBuyerDemandTonnes()
-)
+                /*
+                 * ARRIVAL VOLUME
+                 *
+                 * BigDecimal -> Double
+                 */
+
+                .arrivalVolumeTonnes(
+                        arrivalVolumeTonnes
+                )
+
+
+                /*
+                 * BUYER DEMAND
+                 */
+
+                .buyerDemandTonnes(
+                        defaultDouble(
+                                lot.getBuyerDemandTonnes(),
+                                0.0
+                        )
+                )
+
+
+                /*
+                 * STORAGE
+                 */
 
                 .storageCapacityUsedPct(
                         defaultDouble(
@@ -233,6 +330,11 @@ public class CropLotMLService {
                                 50.0
                         )
                 )
+
+
+                /*
+                 * TRANSPORT
+                 */
 
                 .transportDistanceKm(
                         defaultDouble(
@@ -247,6 +349,11 @@ public class CropLotMLService {
                                 0.0
                         )
                 )
+
+
+                /*
+                 * BUYER INFORMATION
+                 */
 
                 .buyerOfferedPriceRsPerQuintal(
                         defaultDouble(
@@ -269,8 +376,20 @@ public class CropLotMLService {
                         )
                 )
 
+
+                /*
+                 * FINISH
+                 */
+
                 .build();
     }
+
+
+    /*
+     * ==========================================
+     * DEFAULT STRING
+     * ==========================================
+     */
 
     private String defaultString(
             String value,
@@ -282,6 +401,13 @@ public class CropLotMLService {
                 ? defaultValue
                 : value;
     }
+
+
+    /*
+     * ==========================================
+     * DEFAULT DOUBLE
+     * ==========================================
+     */
 
     private Double defaultDouble(
             Double value,
