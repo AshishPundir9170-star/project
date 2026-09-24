@@ -20,7 +20,7 @@ ALTER TABLE audit_logs
 -- 4. Add user_id because AuditLog entity contains:
 --    @JoinColumn(name = "user_id")
 ALTER TABLE audit_logs
-    ADD COLUMN user_id UUID;
+ADD COLUMN IF NOT EXISTS user_id UUID;
 
 -- 5. Add foreign key
 ALTER TABLE audit_logs

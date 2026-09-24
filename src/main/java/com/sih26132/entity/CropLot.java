@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "crop_lots")
@@ -66,8 +67,8 @@ public class CropLot {
     @Column(name = "price_trend")
     private Double priceTrend;
 
-    @Column(name = "arrival_volume_tonnes")
-    private Double arrivalVolumeTonnes;
+    @Column(name = "arrival_volume_tonnes", precision = 12, scale = 2)
+private BigDecimal arrivalVolumeTonnes;
 
     @Column(name = "buyer_demand_tonnes")
     private Double buyerDemandTonnes;
