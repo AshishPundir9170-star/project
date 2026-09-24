@@ -32,9 +32,8 @@ public class AuditLog {
 
     @Column(name = "entity_id")
     private UUID entityId;
-
-    @Column(columnDefinition = "TEXT")
-    private String details;
+@Column(name = "details", columnDefinition = "jsonb")
+private String details;
 
     @Column(name = "ip_address", length = 100)
     private String ipAddress;
