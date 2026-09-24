@@ -214,26 +214,18 @@ public class CropLotMLService {
                 )
 
                 .priceTrend(
-                        defaultDouble(
-                                lot.getPriceTrend(),
-                                0.0
-                        )
-                )
+        lot.getPriceTrend()
+)
 
-                .arrivalVolumeTonnes(
-                        defaultDouble(
-                               lot.getArrivalVolumeTonnes() != null
-        ? lot.getArrivalVolumeTonnes().doubleValue()
-        : 0.0
-                        )
-                )
+.arrivalVolumeTonnes(
+        cropLot.getArrivalVolumeTonnes() != null
+                ? cropLot.getArrivalVolumeTonnes().doubleValue()
+                : 0.0
+)
 
-                .buyerDemandTonnes(
-                        defaultDouble(
-                                lot.getBuyerDemandTonnes(),
-                                0.0
-                        )
-                )
+.buyerDemandTonnes(
+        lot.getBuyerDemandTonnes()
+)
 
                 .storageCapacityUsedPct(
                         defaultDouble(
