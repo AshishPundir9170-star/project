@@ -35,8 +35,8 @@ public class AuditLog {
 @Column(name = "details", columnDefinition = "jsonb")
 private String details;
 
-    @Column(name = "ip_address", length = 100)
-    private String ipAddress;
+   @Column(name = "ip_address", columnDefinition = "inet")
+private String ipAddress;
 
     @Column(name = "user_agent", length = 1000)
     private String userAgent;
