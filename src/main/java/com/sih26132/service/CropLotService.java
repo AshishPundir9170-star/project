@@ -211,16 +211,18 @@ public class CropLotService {
                 )
 
                 .priceTrend(
-                        lot.getPriceTrend()
-                )
+        lot.getPriceTrend()
+)
 
-                .arrivalVolumeTonnes(
-                        lot.getArrivalVolumeTonnes()
-                )
+.arrivalVolumeTonnes(
+        lot.getArrivalVolumeTonnes() != null
+                ? lot.getArrivalVolumeTonnes().doubleValue()
+                : 0.0
+)
 
-                .buyerDemandTonnes(
-                        lot.getBuyerDemandTonnes()
-                )
+.buyerDemandTonnes(
+        lot.getBuyerDemandTonnes()
+)
 
                 .storageCapacityUsedPct(
                         lot.getStorageCapacityUsedPct()

@@ -222,8 +222,9 @@ public class CropLotMLService {
 
                 .arrivalVolumeTonnes(
                         defaultDouble(
-                                lot.getArrivalVolumeTonnes(),
-                                0.0
+                               lot.getArrivalVolumeTonnes() != null
+        ? lot.getArrivalVolumeTonnes().doubleValue()
+        : 0.0
                         )
                 )
 
